@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Error from "./pages/Error";
 import Landing from "./pages/Landing";
 import Register from "./pages/Register";
+import DashboardLayout from "./pages/DashboardLayout";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route index element={<Landing />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
+        <Route path="dashboard" element={<DashboardLayout />} />
       </Route>
       <Route path="*" element={<Error />} />
     </Routes>
