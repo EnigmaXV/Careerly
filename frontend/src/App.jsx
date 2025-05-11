@@ -6,6 +6,7 @@ import HomePage from "./pages/HomePage";
 import Login from "./pages/Login";
 import Error from "./pages/Error";
 import Landing from "./pages/Landing";
+import Register from "./pages/Register";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Route path="/" element={<HomePage />}>
         <Route index element={<Landing />} />
         <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
       </Route>
       <Route path="*" element={<Error />} />
     </Routes>
