@@ -7,7 +7,7 @@ import { useDashboardContext } from "../pages/DashboardLayout";
 import Burger from "./Burger";
 
 const Navbar = () => {
-  const { user, isSidebarOpen } = useDashboardContext();
+  // const { user, isSidebarOpen } = useDashboardContext();
   return (
     <StyledWrapper>
       <Burger />
@@ -32,7 +32,7 @@ const StyledWrapper = styled.nav`
   padding: 1rem 2rem;
   box-shadow: var(--shadow-4);
   position: relative;
-  background-color: #000000;
+  background-color: var(--navbar-bg-color);
   height: var(--nav-height);
   .user {
     display: flex;

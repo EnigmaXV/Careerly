@@ -75,18 +75,25 @@ html {
   --background-secondary-color: var(--white);
   --text-secondary-color: var(--grey-500);
 
+  --primary-theme: #fdfdfd; /* Soft white (not pure white) */
+  --primary-font-color: #1f1f1f; /* Almost black for strong readability */
+  --secondary-font-color: #5f6368; /* Muted gray for subtext (Google-like) */
+  --primary-button-color: #0077cc; /* Deep but vibrant blue */
+  --secondary-button-color: #3399ff; /* Softer blue for hovers/secondary actions */
+
+  --navbar-bg-color: #e9ecef; /* Light gray with warmth (Navbar) */
+  --sidebar-bg-color: #e9ecef; /* Slightly darker for sidebar contrast */
+  --border-color: #d0d4d8;
+}
+
+.dark-theme {
   --primary-theme: #121417;
   --primary-font-color: #f1f3f5;
   --secondary-font-color: #a4a6a8;
   --primary-button-color: #00a8e8;
   --secondary-button-color: #4dd0e1;
-}
-
-.dark-theme {
-  --text-color: var(--dark-mode-text-color);
-  --background-color: var(--dark-mode-bg-color);
-  --text-secondary-color: var(--dark-mode-text-secondary-color);
-  --background-secondary-color: var(--dark-mode-bg-secondary-color);
+  --navbar-bg-color: #0000;
+  --sidebar-bg-color: #0000;
 }
 
 body {

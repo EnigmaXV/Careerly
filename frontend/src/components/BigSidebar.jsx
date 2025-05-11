@@ -48,7 +48,7 @@ const Wrapper = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 100vw;
-    background-color: #000000;
+    background-color: var(--sidebar-bg-color);
     box-shadow: var(--shadow-4);
     margin-top: 20px;
     height: 100vh;
@@ -71,7 +71,7 @@ const StyledLink = styled(Link)`
   align-items: center;
   gap: 0.75rem;
   font-size: 0.95rem;
-  color: #f1f3f5;
+  color: var(--primary-font-color);
   text-decoration: none;
   transition: color 0.2s ease, transform 0.2s ease;
 
@@ -88,7 +88,7 @@ const StyledLink = styled(Link)`
 const Logout = styled.div`
   gap: 0.75rem;
   font-size: 0.95rem;
-  color: #f1f3f5;
+  color: var(--primary-font-color);
   text-decoration: none;
   transition: color 0.2s ease;
   display: flex;

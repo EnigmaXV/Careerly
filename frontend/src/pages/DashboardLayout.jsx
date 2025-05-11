@@ -7,18 +7,29 @@ import { useState, createContext, useContext } from "react";
 import BigSidebar from "../components/BigSidebar";
 
 const DashboardContext = createContext();
-const DashboardLayout = () => {
+const DashboardLayout = ({ currentTheme }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const user = {
     name: "Omar",
   };
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [isDarkTheme, setIsDarkTheme] = useState(currentTheme);
 
-  console.log(isSidebarOpen);
+  const toggleDarkTheme = () => {
+    const newDarkTheme = !isDarkTheme;
+    setIsDarkTheme(newDarkTheme);
+    document.body.classList.toggle("dark-theme", newDarkTheme);
+    localStorage.setItem("darkTheme", newDarkTheme);
+  };
 
   return (
     <DashboardContext.Provider
-      value={{ user, isDarkTheme, isSidebarOpen, setIsSidebarOpen }}
+      value={{
+        user,
+        isDarkTheme,
+        isSidebarOpen,
+        setIsSidebarOpen,
+        toggleDarkTheme,
+      }}
     >
       <Navbar />
       {isSidebarOpen && <Sidebar />}
