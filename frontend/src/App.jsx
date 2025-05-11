@@ -10,13 +10,27 @@ import Register from "./pages/Register";
 import DashboardLayout from "./pages/DashboardLayout";
 
 function App() {
+  const getCurrentTheme = () => {
+    const darkTheme = localStorage.getItem("darkTheme");
+    if (darkTheme === "true") {
+      document.body.classList.add("dark-theme");
+      return true;
+    } else {
+      document.body.classList.remove("dark-theme");
+      return false;
+    }
+  };
+  const currentTheme = getCurrentTheme();
   return (
     <Routes>
       <Route path="/" element={<HomePage />}>
         <Route index element={<Landing />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
-        <Route path="dashboard" element={<DashboardLayout />} />
+        <Route
+          path="dashboard"
+          element={<DashboardLayout currentTheme={currentTheme} />}
+        />
       </Route>
       <Route path="*" element={<Error />} />
     </Routes>

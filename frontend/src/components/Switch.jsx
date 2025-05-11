@@ -1,11 +1,17 @@
 import React from "react";
 import styled from "styled-components";
+import { useDashboardContext } from "../pages/DashboardLayout";
 
 const Switch = () => {
+  const { toggleDarkTheme, isDarkTheme } = useDashboardContext();
+  console.log(isDarkTheme);
   return (
     <StyledWrapper>
       <label className="ui-switch">
-        <input type="checkbox" />
+        <input
+          type="checkbox"
+          onChange={(e) => toggleDarkTheme(e.target.checked)}
+        />
         <div className="slider">
           <div className="circle" />
         </div>
