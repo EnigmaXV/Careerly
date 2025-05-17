@@ -5,11 +5,7 @@
 > [!NOTE]
 > You must be connected to the university network (via VPN or intranet) to access this website.
 
----
-
 The **Nodes** page serves as a central dashboard for monitoring and managing all nodes registered within the TBMS system. It features a dynamic, paginated table where each row represents a node, summarizing essential information such as hardware interfaces, operational status, last seen timestamps, and internal IP assignments. This streamlined view allows users to efficiently assess the state and configuration of the testbed infrastructure at a glance.
-
----
 
 ## 1.1 Columns Breakdown
 
@@ -35,8 +31,6 @@ The **Nodes** page serves as a central dashboard for monitoring and managing all
 
 - **Actions**  
   Includes a button to view or edit node configurations in detail.
-
----
 
 ## 1.2 Viewing Node Details
 
@@ -64,8 +58,6 @@ Clicking **“More Details”** or the edit icon opens the full node configurati
   - **PHY Info** (for wireless interfaces): `phy name`, `(E)SSID`, frequency, BSSID
   - Option to toggle interface control capability
 
----
-
 ## 1.3 Node Status Color Codes
 
 | Color    | Meaning                                                    |
@@ -78,8 +70,6 @@ Clicking **“More Details”** or the edit icon opens the full node configurati
 # 2. Creating an Experiment in TBMS
 
 When setting up a new experiment in TBMS, the first step involves configuring the **General Properties**. This section defines the basic setup and execution parameters for the experiment.
-
----
 
 ## 2.1 General Properties
 
@@ -99,16 +89,12 @@ When setting up a new experiment in TBMS, the first step involves configuring th
 | **Pause Between Replications** | Define a waiting period (in seconds) between repetitions.                                  |
 | **Auto-Deletion Time**         | Set when to auto-delete the experiment data to free up resources.                          |
 
----
-
 ## 2.2 Action Buttons
 
 - **Store** – Save the current setup
 - **Apply Current Changes** – Apply without starting a new experiment
 - **Discard Current Changes** – Undo changes made
 - **Cancel** – Exit the creation page without saving
-
----
 
 ## 2.3 Setup Action Blocks
 
@@ -140,8 +126,6 @@ Runs **after** all replications complete.
 # 3. TBMS Experiment Configuration Tabs
 
 This guide explains the use of the **Variables**, **Files**, and **Node Groups** tabs in the TBMS experiment configuration interface.
-
----
 
 ## 3.1 Variables Tab
 
@@ -175,8 +159,6 @@ Used to define and manage experimental variables for each iteration.
 | **Cancel**                  | Cancel the operation   |
 | **Export**                  | Export variable setup  |
 
----
-
 ## 3.2 Files Tab
 
 Upload and manage files used in action blocks.
@@ -189,8 +171,6 @@ Upload and manage files used in action blocks.
 ### Control Buttons
 
 Same as the Variables tab.
-
----
 
 ## 3.3 Node Groups Tab
 
@@ -216,4 +196,5 @@ Define and manage node groups for experiment execution.
 | **Delete Node Group**       | Remove selected group |
 | **Add Node Group**          | Add new group         |
 
----
+> [!TIP]
+> Review and validate all configurations before launching your experiment to ensure predictable results.
