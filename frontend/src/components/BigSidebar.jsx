@@ -48,7 +48,7 @@ const Wrapper = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 100vw;
-    background-color: var(--sidebar-bg-color);
+    background-color: var(--bigsidebar-bg-color);
     box-shadow: var(--shadow-4);
     margin-top: 20px;
     height: 100vh;

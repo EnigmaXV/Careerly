@@ -3,11 +3,9 @@ import Logo from "./Logo";
 import Switch from "./Switch";
 import styled from "styled-components";
 import img from "../assets/images/avatar-2.jpg";
-import { useDashboardContext } from "../pages/DashboardLayout";
 import Burger from "./Burger";
 
 const Navbar = () => {
-  // const { user, isSidebarOpen } = useDashboardContext();
   return (
     <StyledWrapper>
       <Burger />
