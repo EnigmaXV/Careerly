@@ -5,6 +5,7 @@ import { FaUserFriends } from "react-icons/fa";
 import { MdMessage } from "react-icons/md";
 import { BsPersonWorkspace } from "react-icons/bs";
 import Logo from "../components/Logo";
+import { Link } from "react-router";
 const Landing = () => {
   return (
     <>
@@ -17,7 +18,15 @@ const Landing = () => {
               Find your next opportunity and grow your career with Careerly
             </h3>
           </div>
-          <button>Get started</button>
+          <button>
+            <Link
+              to="/dashboard"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              {" "}
+              Get started{" "}
+            </Link>
+          </button>
 
           <div className="features">
             <div className="feature">

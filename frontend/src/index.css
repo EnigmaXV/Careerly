@@ -84,6 +84,7 @@ html {
   --navbar-bg-color: #e9ecef; /* Light gray with warmth (Navbar) */
   --sidebar-bg-color: #e9ecef; /* Slightly darker for sidebar contrast */
   --border-color: #d0d4d8;
+  --bigsidebar-bg-color: #f8f9fa; /* Light gray for sidebar */
 }
 
 .dark-theme {
@@ -94,6 +95,7 @@ html {
   --secondary-button-color: #4dd0e1;
   --navbar-bg-color: #0000;
   --sidebar-bg-color: #0000;
+  --bigsidebar-bg-color: black;
 }
 
 body {
