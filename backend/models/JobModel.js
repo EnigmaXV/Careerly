@@ -14,12 +14,18 @@ const jobSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["interview", "declined", "pending"],
+      enum: {
+        values: ["interview", "declined", "pending"],
+        message: "{VALUE} is not a valid status",
+      },
       default: "pending",
     },
     jobType: {
       type: String,
-      enum: ["full-time", "part-time", "internship"],
+      enum: {
+        values: ["full-time", "part-time", "internship"],
+        message: "{VALUE} is not a valid job type",
+      },
       default: "full-time",
     },
     jobLocation: {

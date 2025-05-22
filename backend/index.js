@@ -6,6 +6,7 @@ require("dotenv").config();
 
 const connectToDatabase = require("./DB/connectToDatabase");
 const jobsRouter = require("./routes/JobRoutes");
+const authRouter = require("./routes/authRoutes");
 
 // Middlewares
 app.use(express.json());
@@ -14,6 +15,7 @@ app.use(express.static("public"));
 
 // Routes
 app.use("/api/v1/jobs", jobsRouter);
+app.use("/api/v1/auth", authRouter);
 
 app.use((err, req, res, next) => {
   console.log(chalk.red(err));
