@@ -1,5 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 const Job = require("../models/JobModel");
+const User = require("../models/UserModel");
 
 const getAllJobs = async (req, res) => {
   try {
@@ -25,7 +26,11 @@ const createJob = async (req, res) => {
         .json({ msg: "Please provide all values" });
     }
 
-    const job = await Job.create({ company, position });
+    const job = await Job.create({
+      company,
+      position,
+      createdBy: req.user.userId,
+    });
     res.status(StatusCodes.CREATED).json({ success: true, job });
   } catch (err) {
     res
