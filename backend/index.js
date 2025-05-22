@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 const app = express();
 const { StatusCodes } = require("http-status-codes");
 require("dotenv").config();
@@ -12,6 +13,7 @@ const authRouter = require("./routes/authRoutes");
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(express.static("public"));
+app.use(cookieParser());
 
 // Routes
 app.use("/api/v1/jobs", jobsRouter);
