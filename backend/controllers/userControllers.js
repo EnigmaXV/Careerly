@@ -16,11 +16,13 @@ const getCurrentUser = async (req, res) => {
 
 const getStats = async (req, res) => {
   try {
-    const allUsers = await User.countDocuments({});
-    const allJobs = await Job.countDocuments({});
-    const rejectedJobs = await Job.countDocuments({ status: "declined" });
-    const pendingJobs = await Job.countDocuments({ status: "pending" });
-    const interviews = await Job.countDocuments({ status: "rejected" });
+    const [allUsers, allJobs, rejectedJobs, pendingJobs, interviews] = await Promise.all([
+      User.countDocuments({}),
+      Job.countDocuments({}),
+      Job.countDocuments({ status: "declined" }),
+      Job.countDocuments({ status: "pending" }),
+      Job.countDocuments({ status: "rejected" }),
+    ]);
 
     res.status(StatusCodes.OK).json({
       allUsers,
