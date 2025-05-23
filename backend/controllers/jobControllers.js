@@ -1,6 +1,5 @@
 const { StatusCodes } = require("http-status-codes");
 const Job = require("../models/JobModel");
-const User = require("../models/UserModel");
 
 const getAllJobs = async (req, res) => {
   try {
@@ -42,19 +41,26 @@ const createJob = async (req, res) => {
 const updateJob = async (req, res) => {
   try {
     const { id: jobId } = req.params;
-    const job = await Job.findByIdAndUpdate(jobId, req.body, {
-      new: true,
-      runValidators: true,
-    });
 
-    res.status(StatusCodes.OK).json({ success: true, job });
-
+    const job = await Job.findById(jobId);
     if (!job) {
       return res.status(StatusCodes.NOT_FOUND).json({
         success: false,
         msg: `No job found for this id with id: ${jobId}`,
       });
     }
+    if (job.createdBy.toString() !== req.user.userId) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ success: false, msg: "Not authorized to update this job" });
+    }
+
+    const updatedJob = await Job.findByIdAndUpdate(jobId, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(StatusCodes.OK).json({ success: true, job: updatedJob });
   } catch (err) {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)

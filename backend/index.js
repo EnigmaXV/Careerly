@@ -8,6 +8,7 @@ require("dotenv").config();
 const connectToDatabase = require("./DB/connectToDatabase");
 const jobsRouter = require("./routes/JobRoutes");
 const authRouter = require("./routes/authRoutes");
+const userRouter = require("./routes/userRoutes");
 
 // Middlewares
 app.use(express.json());
@@ -18,6 +19,7 @@ app.use(cookieParser());
 // Routes
 app.use("/api/v1/jobs", jobsRouter);
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/users", userRouter);
 
 app.use((err, req, res, next) => {
   console.log(chalk.red(err));
