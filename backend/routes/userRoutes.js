@@ -8,8 +8,8 @@ const {
 
 const { protect, restrictTo } = require("../middlewares/authMiddleware");
 
-router.route("/get-current-user").get(protect, getCurrentUser);
-router.route("/update-user").patch(protect, updateUser);
-router.route("/get-stats").get(protect, restrictTo("admin"), getStats);
+router.route("/me").get(protect, getCurrentUser);
+router.route("/me").patch(protect, updateUser);
+router.route("/users/stats").get(protect, restrictTo("admin"), getStats);
 
 module.exports = router;
