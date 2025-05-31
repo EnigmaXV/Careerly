@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import FormInput from "../components/FormInput";
 import styled from "styled-components";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -10,15 +12,38 @@ const Register = () => {
     password: "",
   });
 
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const registerMutation = useMutation({
+    mutationFn: async (formData) => {
+      const res = await axios.post("/api/auth/register", formData);
+      return res.data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["user"]);
+      queryClient.setQueryData(["user"], data.user);
+      console.log("Registration successful:", data);
+
+      navigate("/dashboard");
+    },
+    onError: (error) => {
+      console.error(
+        "Registration error:",
+        error.response?.data?.msg || error.message
+      );
+    },
+  });
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Registering user:", formData);
-    // add your submit logic here
+    registerMutation.mutate(formData);
   };
+
+  const isLoading = registerMutation.isPending;
 
   return (
     <>
@@ -46,7 +71,9 @@ const Register = () => {
             onChange={handleChange}
             placeholder="Enter your password"
           />
-          <button type="submit">Register</button>
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? "Signing up ..." : " sign up"}
+          </button>
           <p>
             Do u have an account already ?{" "}
             <Link style={{ color: "var(--primary-button-color)" }} to="/login">
