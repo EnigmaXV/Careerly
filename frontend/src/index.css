@@ -63,28 +63,35 @@ html {
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --shadow-4: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* Light Mode Colors */
+  --primary-theme: #f8fafc;
+  --primary-font-color: #0f172a;
+  --secondary-font-color: #334155;
+  --primary-button-color: #0ea5e9;
+  --secondary-button-color: #38bdf8;
+  --navbar-bg-color: #ffffff;
+  --sidebar-bg-color: #ffffff;
+  --border-color: #e2e8f0;
+  --bigsidebar-bg-color: #ffffff;
+  --background-color: #f8fafc;
+  --text-color: #0f172a;
+  --background-secondary-color: #ffffff;
+  --text-secondary-color: #334155;
+  --hover-color: #f1f5f9;
+  --active-color: #e2e8f0;
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  --input-bg: #ffffff;
+  --input-border: #cbd5e1;
+  --input-focus: #0ea5e9;
+
   /* DARK MODE */
 
   --dark-mode-bg-color: #333;
   --dark-mode-text-color: #f0f0f0;
   --dark-mode-bg-secondary-color: #3f3f3f;
   --dark-mode-text-secondary-color: var(--grey-300);
-
-  --background-color: var(--grey-50);
-  --text-color: var(--grey-900);
-  --background-secondary-color: var(--white);
-  --text-secondary-color: var(--grey-500);
-
-  --primary-theme: #fdfdfd; /* Soft white (not pure white) */
-  --primary-font-color: #1f1f1f; /* Almost black for strong readability */
-  --secondary-font-color: #5f6368; /* Muted gray for subtext (Google-like) */
-  --primary-button-color: #0077cc; /* Deep but vibrant blue */
-  --secondary-button-color: #3399ff; /* Softer blue for hovers/secondary actions */
-
-  --navbar-bg-color: #e9ecef; /* Light gray with warmth (Navbar) */
-  --sidebar-bg-color: #e9ecef; /* Slightly darker for sidebar contrast */
-  --border-color: #d0d4d8;
-  --bigsidebar-bg-color: #f8f9fa; /* Light gray for sidebar */
 }
 
 .dark-theme {
@@ -93,9 +100,14 @@ html {
   --secondary-font-color: #a4a6a8;
   --primary-button-color: #00a8e8;
   --secondary-button-color: #4dd0e1;
-  --navbar-bg-color: #0000;
-  --sidebar-bg-color: #0000;
-  --bigsidebar-bg-color: black;
+  --navbar-bg-color: #1a1a1a;
+  --sidebar-bg-color: #1a1a1a;
+  --border-color: #2d2d2d;
+  --bigsidebar-bg-color: #1a1a1a;
+  --background-color: #121417;
+  --text-color: #f1f3f5;
+  --background-secondary-color: #1a1a1a;
+  --text-secondary-color: #a4a6a8;
 }
 
 body {

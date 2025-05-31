@@ -1,12 +1,32 @@
 import React, { useState } from "react";
 import FormInput from "../components/FormInput";
 import styled from "styled-components";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+  });
+
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const loginMutation = useMutation({
+    mutationFn: async (formData) => {
+      const res = await axios.post("api/auth/login", formData);
+      return res.data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["user"]);
+      queryClient.setQueryData(["user"], data.user);
+      navigate("/dashboard");
+    },
+    onError: (error) => {
+      console.error("Login failed:", error.response.data.msg);
+    },
   });
 
   const handleChange = (e) => {
@@ -15,10 +35,19 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    // add your submit logic here
+    loginMutation.mutate(formData);
   };
 
+  //TODO implement demo user later
+  const loginDemoUser = async () => {
+    const demoData = {
+      email: "test@test.com",
+      password: "secret123",
+    };
+    loginMutation.mutate(formData);
+  };
+
+  const isLoading = loginMutation.isPending;
   return (
     <>
       <Wrapper>
@@ -38,7 +67,12 @@ const Login = () => {
             onChange={handleChange}
             placeholder="Enter your password"
           />
-          <button type="submit">Register</button>
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? "Logging in..." : "Login"}
+          </button>
+          {/* <button type="button" onClick={loginDemoUser} disabled={isLoading}>
+            Explore the app
+          </button> */}
           <p>
             Don't have an account ?{" "}
             <Link
@@ -67,7 +101,6 @@ const Wrapper = styled.div`
   h1 {
     font-size: 2rem;
     color: var(--primary-font-color);
-
     font-family: "Poppins", sans-serif;
   }
   h1::first-letter {
@@ -81,18 +114,6 @@ const Wrapper = styled.div`
     gap: 1rem;
   }
 
-  .register-button {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: var(--secondary-color);
-    }
-  }
   button {
     background-color: var(--primary-button-color);
     color: white;
@@ -102,10 +123,15 @@ const Wrapper = styled.div`
     border-radius: 5px;
     font-size: 1.2rem;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
 
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: var(--secondary-button-color);
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
     }
   }
 `;
