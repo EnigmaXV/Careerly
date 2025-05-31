@@ -1,8 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { FiPlusCircle, FiList, FiBarChart2, FiUser } from "react-icons/fi";
 import { LuLogOut } from "react-icons/lu";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import axios from "axios";
 
 const SidebarContainer = styled.div`
   width: 250px;
@@ -60,6 +63,22 @@ const Logout = styled.div`
 `;
 
 export default function Sidebar() {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  const logoutMutation = useMutation({
+    mutationFn: async () => {
+      const res = await axios.get("/api/auth/logout");
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.removeQueries({ queryKey: ["user"] });
+      navigate("/login");
+    },
+    onError: (error) => {
+      console.error("Logout failed:", error);
+    },
+  });
   return (
     <SidebarContainer>
       <div
@@ -85,7 +104,7 @@ export default function Sidebar() {
           </StyledLink>
         </Nav>
 
-        <Logout>
+        <Logout onClick={() => logoutMutation.mutate()}>
           <LuLogOut /> Logout
         </Logout>
       </div>

@@ -4,14 +4,15 @@ import Switch from "./Switch";
 import styled from "styled-components";
 import img from "../assets/images/avatar-2.jpg";
 import Burger from "./Burger";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { useNavigate } from "react-router";
 
 const Navbar = () => {
   const { data: user } = useQuery({
     queryKey: ["user"],
   });
 
-  console.log("User data:", user);
   return (
     <StyledWrapper>
       <Burger />
@@ -54,8 +55,26 @@ const StyledWrapper = styled.nav`
 
     &__info {
       margin-left: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
       span {
         font-weight: bold;
+      }
+
+      .logout-btn {
+        background: transparent;
+        border: none;
+        color: var(--primary-button-color);
+        cursor: pointer;
+        font-size: 0.9rem;
+        padding: 0.25rem 0;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: var(--secondary-button-color);
+        }
       }
     }
   }
