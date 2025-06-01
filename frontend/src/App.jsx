@@ -1,6 +1,3 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import { Routes, Route } from "react-router";
 import HomePage from "./pages/HomePage";
 import Login from "./pages/Login";
@@ -8,6 +5,7 @@ import Error from "./pages/Error";
 import Landing from "./pages/Landing";
 import Register from "./pages/Register";
 import DashboardLayout from "./pages/DashboardLayout";
+import AddJob from "./pages/AddJob";
 
 function App() {
   const getCurrentTheme = () => {
@@ -30,7 +28,9 @@ function App() {
         <Route
           path="dashboard"
           element={<DashboardLayout currentTheme={currentTheme} />}
-        />
+        >
+          <Route path="add-job" element={<AddJob />} />
+        </Route>
       </Route>
       <Route path="*" element={<Error />} />
     </Routes>
