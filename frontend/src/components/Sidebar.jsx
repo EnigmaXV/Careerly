@@ -90,16 +90,16 @@ export default function Sidebar() {
         }}
       >
         <Nav>
-          <StyledLink to="/add-job">
+          <StyledLink to="/dashboard/add-job">
             <FiPlusCircle /> Add Job
           </StyledLink>
-          <StyledLink to="/all-jobs">
+          <StyledLink to="/dashboard/all-jobs">
             <FiList /> All Jobs
           </StyledLink>
-          <StyledLink to="/stats">
+          <StyledLink to="/dashboard/stats">
             <FiBarChart2 /> Stats
           </StyledLink>
-          <StyledLink to="/profile">
+          <StyledLink to="/dashboard/profile">
             <FiUser /> Profile
           </StyledLink>
         </Nav>

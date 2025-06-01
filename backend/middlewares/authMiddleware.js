@@ -1,4 +1,3 @@
-const User = require("../models/UserModel");
 const { StatusCodes } = require("http-status-codes");
 const jwt = require("jsonwebtoken");
 

@@ -2,9 +2,9 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import { Outlet } from "react-router";
 import Sidebar from "../components/Sidebar";
-import styled from "styled-components";
 import { useState, createContext, useContext } from "react";
 import BigSidebar from "../components/BigSidebar";
+import styled from "styled-components";
 
 const DashboardContext = createContext();
 const DashboardLayout = ({ currentTheme }) => {
@@ -31,15 +31,25 @@ const DashboardLayout = ({ currentTheme }) => {
         toggleDarkTheme,
       }}
     >
-      <Navbar />
-      {isSidebarOpen && <Sidebar />}
-      {isSidebarOpen && <BigSidebar />}
-      <div className="dashboard-page">
-        <Outlet />
-      </div>
+      <Wrapper>
+        <Navbar />
+        <div className="dashboard-page">
+          {isSidebarOpen && <Sidebar />}
+          <Outlet />
+        </div>
+      </Wrapper>
     </DashboardContext.Provider>
   );
 };
+
+const Wrapper = styled.div`
+  .dashboard-page {
+    display: flex;
+    height: calc(100vh - var(--nav-height));
+    width: 100%;
+    background-color: var(--background-color);
+  }
+`;
 
 export const useDashboardContext = () => {
   return useContext(DashboardContext);

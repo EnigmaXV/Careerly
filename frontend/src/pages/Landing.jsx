@@ -20,7 +20,7 @@ const Landing = () => {
           </div>
           <button>
             <Link
-              to="/dashboard"
+              to="/login"
               style={{ textDecoration: "none", color: "inherit" }}
             >
               {" "}
