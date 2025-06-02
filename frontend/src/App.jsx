@@ -6,6 +6,7 @@ import Landing from "./pages/Landing";
 import Register from "./pages/Register";
 import DashboardLayout from "./pages/DashboardLayout";
 import AddJob from "./pages/AddJob";
+import AllJobs from "./pages/AllJobs";
 
 function App() {
   const getCurrentTheme = () => {
@@ -30,6 +31,7 @@ function App() {
           element={<DashboardLayout currentTheme={currentTheme} />}
         >
           <Route path="add-job" element={<AddJob />} />
+          <Route path="all-jobs" element={<AllJobs />} />
         </Route>
       </Route>
       <Route path="*" element={<Error />} />

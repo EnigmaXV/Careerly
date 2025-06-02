@@ -181,7 +181,11 @@ const Wrapper = styled.section`
   }
 
   .form-header {
-    background: linear-gradient(135deg, var(--primary-button-color) 0%, var(--secondary-button-color) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--primary-button-color) 0%,
+      var(--secondary-button-color) 100%
+    );
     padding: 2.5rem 2rem;
     color: white;
 
