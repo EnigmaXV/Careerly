@@ -31,6 +31,16 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "my city",
     },
+    lastActive: {
+      type: Date,
+      default: Date.now,
+    },
+    jobs: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "Job",
+      },
+    ],
   },
   { timestamps: true }
 );
