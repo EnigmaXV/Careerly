@@ -27,7 +27,7 @@ const AddJob = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["jobs"]);
-      navigate("/all-jobs");
+      navigate("/dashboard/all-jobs");
     },
   });
 

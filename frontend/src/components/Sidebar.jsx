@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router";
 import { FiPlusCircle, FiList, FiBarChart2, FiUser } from "react-icons/fi";
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import { LuLogOut } from "react-icons/lu";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -101,6 +102,9 @@ export default function Sidebar() {
           </StyledLink>
           <StyledLink to="/dashboard/profile">
             <FiUser /> Profile
+          </StyledLink>
+          <StyledLink to="/dashboard/admin">
+            <MdOutlineAdminPanelSettings /> Admin
           </StyledLink>
         </Nav>
 

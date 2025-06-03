@@ -13,6 +13,8 @@ import { FaRegBuilding } from "react-icons/fa";
 import axiosInstance from "../utils/axios";
 import Modal from "../components/Modal";
 import EditJobModal from "../components/EditJobModal";
+import dayjs from "dayjs";
+import { CiCalendarDate } from "react-icons/ci";
 
 const AllJobs = () => {
   const queryClient = useQueryClient();
@@ -77,6 +79,17 @@ const AllJobs = () => {
     );
   }
 
+  if (!isLoading && data?.jobs?.length === 0) {
+    return (
+      <Wrapper>
+        <div className="no-jobs-message">
+          <h2>No Jobs Found</h2>
+          <p>It looks like you haven't added any jobs yet. Add a job to get started!</p>
+        </div>
+      </Wrapper>
+    );
+  }
+
   return (
     <Wrapper>
       <div className="jobs-container">
@@ -128,6 +141,10 @@ const AllJobs = () => {
                   <FiCheckCircle className="icon" />
                   <span className={`status${job.status}`}>{job.status}</span>
                 </div>
+              </div>
+              <div className="job-created-at">
+                <CiCalendarDate size={25} className="icon" />
+                Created on {dayjs(job.createdAt).format("MMM D, YYYY")}
               </div>
             </div>
           ))}
@@ -282,6 +299,7 @@ const Wrapper = styled.section`
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    margin-bottom: 1rem;
 
     .detail-item {
       display: flex;
@@ -319,12 +337,51 @@ const Wrapper = styled.section`
     }
   }
 
+  .job-created-at {
+    font-size: 0.9rem;
+    color: var(--text-secondary-color);
+    text-align: right;
+    margin-top: 0.5rem;
+    border-top: 1px solid var(--secondary-button-color);
+    padding-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    .icon {
+      color: var(--primary-500);
+    }
+    justify-content: flex-end;
+  }
+
   .loading,
   .error {
     text-align: center;
     padding: 2rem;
     font-size: 1.1rem;
     color: var(--text-secondary-color);
+  }
+
+  .no-jobs-message {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--navbar-bg-color);
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    max-width: 600px;
+    margin: 4rem auto;
+
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary-700);
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: var(--text-secondary-color);
+      line-height: 1.5;
+    }
   }
 
   .error {
