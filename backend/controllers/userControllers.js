@@ -65,8 +65,41 @@ const updateUser = async (req, res) => {
   }
 };
 
+const getAdminStats = async (req, res) => {
+  try {
+    const [allUsers, allJobs] = await Promise.all([
+      User.countDocuments({}),
+      Job.countDocuments({}),
+    ]);
+    let activeUsers = await User.find({
+      lastActive: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) },
+    }).populate("jobs");
+
+    activeUsers = activeUsers.map((user) => ({
+      name: user.name,
+      location: user.location,
+      lastActive: `${Math.floor(
+        (new Date() - new Date(user.lastActive)) / (1000 * 60)
+      )} minutes ago`,
+      jobs: user.jobs?.map((job) => ({
+        position: job.position,
+        company: job.company,
+      })),
+    }));
+
+    res.status(StatusCodes.OK).json({
+      allUsers,
+      allJobs,
+      activeUsers,
+    });
+  } catch (err) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: err.message });
+  }
+};
+
 module.exports = {
   getCurrentUser,
   getStats,
   updateUser,
+  getAdminStats,
 };

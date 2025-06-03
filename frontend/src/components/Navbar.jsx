@@ -12,7 +12,6 @@ const Navbar = () => {
   const { data: user } = useQuery({
     queryKey: ["user"],
   });
-
   return (
     <StyledWrapper>
       <Burger />

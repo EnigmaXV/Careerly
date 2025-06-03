@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router";
 import { FiPlusCircle, FiList, FiBarChart2, FiUser } from "react-icons/fi";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import { LuLogOut } from "react-icons/lu";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 
 import axios from "axios";
 
@@ -66,6 +66,10 @@ const Logout = styled.div`
 export default function Sidebar() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { data: currentUser } = useQuery({
+    queryKey: ["user"],
+  });
+  const isAdmin = currentUser?.role === "admin";
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
@@ -103,9 +107,11 @@ export default function Sidebar() {
           <StyledLink to="/dashboard/profile">
             <FiUser /> Profile
           </StyledLink>
-          <StyledLink to="/dashboard/admin">
-            <MdOutlineAdminPanelSettings /> Admin
-          </StyledLink>
+          {isAdmin && (
+            <StyledLink to="/dashboard/admin">
+              <MdOutlineAdminPanelSettings /> Admin
+            </StyledLink>
+          )}
         </Nav>
 
         <Logout onClick={() => logoutMutation.mutate()}>

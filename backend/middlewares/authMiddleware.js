@@ -1,5 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 const jwt = require("jsonwebtoken");
+const User = require("../models/UserModel");
 
 const protect = async (req, res, next) => {
   const token = req.cookies.auth_token;
@@ -13,6 +14,14 @@ const protect = async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
+    const activeUser = await User.findById(req.user.userId).select("-password");
+    if (!activeUser) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ error: "User not found" });
+    }
+    activeUser.lastActive = new Date();
+    await activeUser.save();
     next();
   } catch (err) {
     return res.status(StatusCodes.UNAUTHORIZED).json({ msg: err.message });

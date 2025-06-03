@@ -1,63 +1,60 @@
 import React from "react";
 import styled from "styled-components";
 import { FaUsers, FaClipboardList, FaFire, FaFlag } from "react-icons/fa";
-
-const summaryData = [
-  {
-    label: "Users",
-    value: "35,210",
-    icon: <FaUsers />,
-    color: "#4F8CFF",
-  },
-  {
-    label: "Job Posts",
-    value: "8,214",
-    icon: <FaClipboardList />,
-    color: "#FF8C42",
-  },
-  {
-    label: "Active Today",
-    value: "1,032",
-    icon: <FaFire />,
-    color: "#FFB142",
-  },
-  {
-    label: "Flagged Items",
-    value: "23",
-    icon: <FaFlag />,
-    color: "#FF4F4F",
-  },
-];
-
-const activityData = [
-  {
-    time: "2m ago",
-    event: "New Signup",
-    user: "johndoe",
-    details: "Junior Developer",
-  },
-  {
-    time: "5m ago",
-    event: "Job Posted",
-    user: "acme_corp",
-    details: "Frontend Engineer",
-  },
-  {
-    time: "10m ago",
-    event: "Post Flagged",
-    user: "user123",
-    details: "Inappropriate content",
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import axiosInstance from "../utils/axios";
 
 const AdminDashboard = () => {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["adminSummary"],
+    queryFn: async () => {
+      const response = await axiosInstance.get("/users/admin-stats");
+      return response.data;
+    },
+    refetchOnWindowFocus: false,
+  });
+
+  const summaryCardsData = [
+    {
+      label: "Users",
+      value: data?.allUsers || 0,
+      icon: <FaUsers />,
+      color: "#4F8CFF",
+    },
+    {
+      label: "Job Posts",
+      value: data?.allJobs || 0,
+      icon: <FaClipboardList />,
+      color: "#FF8C42",
+    },
+  ];
+
+  if (isLoading) {
+    return (
+      <Wrapper>
+        <div className="loading">Loading dashboard data...</div>
+      </Wrapper>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Wrapper>
+        <div className="error">Error loading dashboard data.</div>
+      </Wrapper>
+    );
+  }
+
   return (
     <Wrapper>
       <h1 className="dashboard-title">Admin Dashboard</h1>
       <div className="summary-cards">
-        {summaryData.map((item) => (
+        {summaryCardsData.map((item) => (
           <div className="summary-card" key={item.label}>
-            <div className="icon" style={{ background: item.color + "22", color: item.color }}>
+            <div
+              className="icon"
+              style={{ background: item.color + "22", color: item.color }}
+            >
               {item.icon}
             </div>
             <div className="info">
@@ -67,30 +64,63 @@ const AdminDashboard = () => {
           </div>
         ))}
       </div>
+
       <div className="activity-section">
-        <h2>Recent Activity</h2>
-        <div className="activity-table-wrapper">
-          <table className="activity-table">
-            <thead>
-              <tr>
-                <th>Time</th>
-                <th>Event</th>
-                <th>User</th>
-                <th>Details</th>
-              </tr>
-            </thead>
-            <tbody>
-              {activityData.map((row, idx) => (
-                <tr key={idx}>
-                  <td>{row.time}</td>
-                  <td>{row.event}</td>
-                  <td className="user">{row.user}</td>
-                  <td>{row.details}</td>
+        <h2>Recent Active Users & Their Job Posts</h2>
+        {data?.activeUsers?.length > 0 ? (
+          <div className="activity-table-wrapper">
+            <table className="activity-table">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>position</th>
+                  <th>Company</th>
+                  <th>Location</th>
+                  <th>Last Active</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {data.activeUsers.map((user) => {
+                  const isActieNow =
+                    user.lastActive === "0 minutes ago"
+                      ? "Active Now"
+                      : user.lastActive;
+                  return (
+                    <tr key={user._id}>
+                      <td className="user-name">{user.name}</td>
+                      <td>
+                        {user.jobs && user.jobs.length > 0 ? (
+                          <ul>
+                            {user.jobs.map((job) => (
+                              <li key={job._id}>{job.position}</li>
+                            ))}
+                          </ul>
+                        ) : (
+                          "No jobs posted"
+                        )}
+                      </td>
+                      <td>
+                        {user.jobs && user.jobs.length > 0 ? (
+                          <ul>
+                            {user.jobs.map((job) => (
+                              <li key={job._id}>{job.company}</li>
+                            ))}
+                          </ul>
+                        ) : (
+                          "No companies listed"
+                        )}
+                      </td>
+                      <td>{user.location || "N/A"}</td>
+                      <td>{isActieNow || "N/A"}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="no-active-users">No active users found recently.</div>
+        )}
       </div>
     </Wrapper>
   );
@@ -102,7 +132,7 @@ const Wrapper = styled.section`
   padding: 2rem 1rem;
   background: var(--background-color);
   border-radius: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 
   .dashboard-title {
     font-size: 2rem;
@@ -122,7 +152,7 @@ const Wrapper = styled.section`
   .summary-card {
     background: var(--navbar-bg-color, #fff);
     border-radius: 1rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -131,7 +161,7 @@ const Wrapper = styled.section`
     border: 1px solid var(--border-color, #ececec);
     min-width: 0;
     &:hover {
-      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     }
     .icon {
       font-size: 2rem;
@@ -167,14 +197,15 @@ const Wrapper = styled.section`
     .activity-table-wrapper {
       background: var(--navbar-bg-color, #fff);
       border-radius: 1rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
       padding: 1.5rem 1rem;
       overflow-x: auto;
     }
     .activity-table {
       width: 100%;
       border-collapse: collapse;
-      th, td {
+      th,
+      td {
         padding: 0.75rem 1rem;
         text-align: left;
         font-size: 1rem;
@@ -188,14 +219,32 @@ const Wrapper = styled.section`
         color: var(--primary-700, #22223b);
         border-bottom: 1px solid var(--border-color, #ececec);
       }
-      .user {
+      .user-name {
         font-weight: 600;
-        color: var(--primary-button-color, #4F8CFF);
+        color: var(--primary-button-color, #4f8cff);
       }
       tr:last-child td {
         border-bottom: none;
       }
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        li {
+          margin-bottom: 0.7rem;
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
     }
+  }
+
+  .no-active-users {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary-color);
+    font-size: 1.1rem;
   }
 
   @media (max-width: 600px) {
@@ -205,11 +254,12 @@ const Wrapper = styled.section`
     .activity-table-wrapper {
       padding: 1rem 0.25rem;
     }
-    .activity-table th, .activity-table td {
+    .activity-table th,
+    .activity-table td {
       padding: 0.5rem 0.5rem;
       font-size: 0.95rem;
     }
   }
 `;
 
-export default AdminDashboard; 
+export default AdminDashboard;

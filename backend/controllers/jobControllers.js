@@ -1,5 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 const Job = require("../models/JobModel");
+const User = require("../models/UserModel");
 
 const getAllJobs = async (req, res) => {
   try {
@@ -32,6 +33,10 @@ const createJob = async (req, res) => {
       company,
       position,
       createdBy: req.user.userId,
+    });
+
+    await User.findByIdAndUpdate(req.user.userId, {
+      $push: { jobs: job._id },
     });
     res.status(StatusCodes.CREATED).json({ success: true, job });
   } catch (err) {
