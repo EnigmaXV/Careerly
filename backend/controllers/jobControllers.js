@@ -3,7 +3,10 @@ const Job = require("../models/JobModel");
 
 const getAllJobs = async (req, res) => {
   try {
-    const jobs = await Job.find({}).sort("-createdAt");
+    console.log(req.user.userId);
+    const jobs = await Job.find({ createdBy: req.user.userId }).sort(
+      "-createdAt"
+    );
 
     res
       .status(StatusCodes.OK)
