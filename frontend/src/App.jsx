@@ -8,6 +8,7 @@ import DashboardLayout from "./pages/DashboardLayout";
 import AddJob from "./pages/AddJob";
 import AllJobs from "./pages/AllJobs";
 import AdminDashboard from "./pages/AdminDashboard";
+import Profile from "./pages/Profile";
 
 function App() {
   const getCurrentTheme = () => {
@@ -34,6 +35,7 @@ function App() {
           <Route path="add-job" element={<AddJob />} />
           <Route path="all-jobs" element={<AllJobs />} />
           <Route path="admin" element={<AdminDashboard />} />
+          <Route path="profile" element={<Profile />} />
         </Route>
       </Route>
       <Route path="*" element={<Error />} />

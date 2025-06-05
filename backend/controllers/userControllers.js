@@ -1,6 +1,8 @@
 const { StatusCodes } = require("http-status-codes");
 const User = require("../models/UserModel");
 const Job = require("../models/JobModel");
+const cloudinary = require("cloudinary").v2;
+const fs = require("fs").promises;
 
 const getCurrentUser = async (req, res) => {
   try {
@@ -8,7 +10,12 @@ const getCurrentUser = async (req, res) => {
     if (!user) {
       return res.status(StatusCodes.NOT_FOUND).json({ msg: "User not found" });
     }
-    res.status(StatusCodes.OK).json({ success: true, user });
+    res.status(StatusCodes.OK).json({
+      name: user.name,
+      email: user.email,
+      location: user.location,
+      profileImg: user.profileImg,
+    });
   } catch (err) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: err.message });
   }
@@ -51,14 +58,18 @@ const updateUser = async (req, res) => {
     user.name = name || user.name;
     user.email = email || user.email;
     user.location = location || user.location;
+    if (req.file) {
+      const response = await cloudinary.uploader.upload(req.file.path);
+      await fs.unlink(req.file.path);
+      user.profileImg = response.secure_url;
+      user.imagePublicId = response.public_id;
+    }
     await user.save();
     res.status(StatusCodes.OK).json({
-      success: true,
-      user: {
-        name: user.name,
-        email: user.email,
-        location: user.location,
-      },
+      name: user.name,
+      email: user.email,
+      location: user.location,
+      profileImg: user.profileImg,
     });
   } catch (err) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: err.message });

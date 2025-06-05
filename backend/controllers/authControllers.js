@@ -28,6 +28,9 @@ const register = async (req, res) => {
       password,
       role: isFirstUser ? "admin" : role,
       location,
+      lastActive: new Date(),
+      profileImg: req.file ? req.file.path : null,
+      imagePublicId: req.file ? req.file.filename : null,
     });
 
     generateCookie(user, res);
@@ -80,6 +83,9 @@ const login = async (req, res) => {
         role: user.role,
         location: user.location,
         id: user._id,
+        profileImg: user.profileImg,
+        imagePublicId: user.imagePublicId,
+        lastActive: user.lastActive,
       },
     });
   } catch (err) {

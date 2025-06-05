@@ -2,7 +2,7 @@ import React from "react";
 import Logo from "./Logo";
 import Switch from "./Switch";
 import styled from "styled-components";
-import img from "../assets/images/avatar-2.jpg";
+import img from "../assets/images/user-pic.jpg";
 import Burger from "./Burger";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -11,7 +11,10 @@ import { useNavigate } from "react-router";
 const Navbar = () => {
   const { data: user } = useQuery({
     queryKey: ["user"],
+    staleTime: 0,
+    notifyOnChangeProps: "all",
   });
+
   return (
     <StyledWrapper>
       <Burger />
@@ -19,7 +22,7 @@ const Navbar = () => {
       <div className="user">
         <Switch />
         <div className="user__img">
-          <img src={img} alt="user" />
+          <img src={user?.profileImg || img} alt={user?.name || "user"} />
         </div>
         <div className="user__info">
           <span>{user?.name || "user"}</span>
@@ -45,8 +48,8 @@ const StyledWrapper = styled.nav`
     &__img {
       margin-left: 1rem;
       img {
-        width: 40px;
-        height: 40px;
+        width: 45px;
+        height: 45px;
         border-radius: 50%;
         object-fit: cover;
       }
