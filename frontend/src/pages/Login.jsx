@@ -37,13 +37,11 @@ const Login = () => {
     e.preventDefault();
     loginMutation.mutate(formData);
   };
-
-  //TODO implement demo user later
-  const loginDemoUser = async () => {
-    const demoData = {
+  const loginTestUser = () => {
+    setFormData({
       email: "test@test.com",
-      password: "secret123",
-    };
+      password: "123",
+    });
     loginMutation.mutate(formData);
   };
 
@@ -70,9 +68,14 @@ const Login = () => {
           <button type="submit" disabled={isLoading}>
             {isLoading ? "Logging in..." : "Login"}
           </button>
-          {/* <button type="button" onClick={loginDemoUser} disabled={isLoading}>
-            Explore the app
-          </button> */}
+          <button
+            type="button"
+            onClick={loginTestUser}
+            disabled={isLoading}
+            className="demo-btn"
+          >
+            Test the app
+          </button>
           <p>
             Don't have an account ?{" "}
             <Link
@@ -132,6 +135,23 @@ const Wrapper = styled.div`
     &:disabled {
       opacity: 0.7;
       cursor: not-allowed;
+    }
+  }
+
+  .demo-btn {
+    background-color: transparent;
+    color: var(--primary-button-color);
+    border: 2px solid var(--primary-button-color);
+    font-weight: 500;
+
+    &:hover:not(:disabled) {
+      background-color: var(--primary-button-color);
+      color: white;
+    }
+
+    &:disabled {
+      border-color: var(--grey-400);
+      color: var(--grey-400);
     }
   }
 `;
