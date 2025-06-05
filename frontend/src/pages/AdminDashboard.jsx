@@ -90,22 +90,28 @@ const AdminDashboard = () => {
                       <td className="user-name">{user.name}</td>
                       <td>
                         {user.jobs && user.jobs.length > 0 ? (
-                          <ul>
+                          <div className="job-cards-list">
                             {user.jobs.map((job) => (
-                              <li key={job._id}>{job.position}</li>
+                              <div key={job._id} className="job-card-inline">
+                                <div className="job-position">{job.position}</div>
+                                <div className="job-company">at {job.company}</div>
+                              </div>
                             ))}
-                          </ul>
+                          </div>
                         ) : (
                           "No jobs posted"
                         )}
                       </td>
                       <td>
                         {user.jobs && user.jobs.length > 0 ? (
-                          <ul>
+                          <div className="job-cards-list">
                             {user.jobs.map((job) => (
-                              <li key={job._id}>{job.company}</li>
+                              <div key={job._id} className="job-card-inline">
+                                <div className="job-company">{job.company}</div>
+                                <div className="job-position">{job.position}</div>
+                              </div>
                             ))}
-                          </ul>
+                          </div>
                         ) : (
                           "No companies listed"
                         )}
@@ -226,17 +232,33 @@ const Wrapper = styled.section`
       tr:last-child td {
         border-bottom: none;
       }
-      ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        li {
-          margin-bottom: 0.7rem;
-          &:last-child {
-            margin-bottom: 0;
-          }
-        }
-      }
+    }
+  }
+
+  .job-cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .job-card-inline {
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    display: flex;
+    gap: 0.5rem;
+    align-items: baseline;
+
+    .job-position {
+      font-weight: 600;
+      color: var(--primary-700);
+    }
+
+    .job-company {
+      color: var(--text-secondary-color);
     }
   }
 

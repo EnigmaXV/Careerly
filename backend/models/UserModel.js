@@ -41,6 +41,8 @@ const UserSchema = new mongoose.Schema(
         ref: "Job",
       },
     ],
+    profileImg: String,
+    imagePublicId: String,
   },
   { timestamps: true }
 );

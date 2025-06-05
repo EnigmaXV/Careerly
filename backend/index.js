@@ -4,6 +4,8 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const { StatusCodes } = require("http-status-codes");
 require("dotenv").config();
+const path = require("path");
+const cloudinary = require("cloudinary").v2;
 
 const connectToDatabase = require("./DB/connectToDatabase");
 const jobsRouter = require("./routes/JobRoutes");
@@ -12,10 +14,17 @@ const userRouter = require("./routes/userRoutes");
 
 // Middlewares
 app.use(express.json());
+app.use(express.static(path.resolve(__dirname, "./public")));
 app.use(morgan("dev"));
 app.use(express.static("public"));
 app.use(cookieParser());
 
+//Cloudinary configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 // Routes
 app.use("/api/v1/jobs", jobsRouter);
 app.use("/api/v1/auth", authRouter);
