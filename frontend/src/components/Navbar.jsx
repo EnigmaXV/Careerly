@@ -5,8 +5,6 @@ import styled from "styled-components";
 import img from "../assets/images/user-pic.jpg";
 import Burger from "./Burger";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { useNavigate } from "react-router";
 
 const Navbar = () => {
   const { data: user } = useQuery({
@@ -38,7 +36,11 @@ const StyledWrapper = styled.nav`
   align-items: center;
   padding: 1rem 2rem;
   box-shadow: var(--shadow-4);
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   background-color: var(--navbar-bg-color);
   height: var(--nav-height);
   .user {

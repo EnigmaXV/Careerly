@@ -17,6 +17,7 @@ const SidebarContainer = styled.div`
   border-right: 1px solid #2c2e33;
   display: flex;
   flex-direction: column;
+  position: fixed;
 `;
 
 const Nav = styled.nav`

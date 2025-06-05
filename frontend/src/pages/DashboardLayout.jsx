@@ -43,6 +43,7 @@ const DashboardLayout = ({ currentTheme }) => {
 };
 
 const Wrapper = styled.div`
+  padding-top: var(--nav-height);
   .dashboard-page {
     display: flex;
     height: calc(100vh - var(--nav-height));
