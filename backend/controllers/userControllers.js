@@ -3,7 +3,8 @@ const User = require("../models/UserModel");
 const Job = require("../models/JobModel");
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs").promises;
-
+const mongoose = require("mongoose");
+const day = require("dayjs");
 const getCurrentUser = async (req, res) => {
   try {
     const user = await User.findById(req.user.userId).select("-password");
@@ -23,21 +24,58 @@ const getCurrentUser = async (req, res) => {
 
 const getStats = async (req, res) => {
   try {
-    const [allUsers, allJobs, rejectedJobs, pendingJobs, interviews] =
-      await Promise.all([
-        User.countDocuments({}),
-        Job.countDocuments({}),
-        Job.countDocuments({ status: "declined" }),
-        Job.countDocuments({ status: "pending" }),
-        Job.countDocuments({ status: "interviews" }),
-      ]);
+    let defaultStats = await Job.aggregate([
+      {
+        $match: { createdBy: new mongoose.Types.ObjectId(req.user.userId) },
+      },
+      {
+        $group: {
+          _id: "$status",
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+    defaultStats = defaultStats.reduce(
+      (acc, curr) => {
+        const { _id: status, count } = curr;
+        acc[status] = count;
+        return acc;
+      },
+      { pending: 0, interview: 0, declined: 0 }
+    );
+
+    let monthlyApplications = await Job.aggregate([
+      { $match: { createdBy: new mongoose.Types.ObjectId(req.user.userId) } },
+      {
+        $group: {
+          _id: {
+            year: { $year: "$createdAt" },
+            month: { $month: "$createdAt" },
+          },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { "_id.year": -1, "_id.month": -1 } },
+      { $limit: 6 },
+    ]);
+    monthlyApplications = monthlyApplications
+      .map((item) => {
+        const {
+          _id: { year, month },
+          count,
+        } = item;
+
+        const date = day()
+          .month(month - 1)
+          .year(year)
+          .format("MMM YY");
+        return { date, count };
+      })
+      .reverse();
 
     res.status(StatusCodes.OK).json({
-      allUsers,
-      allJobs,
-      rejectedJobs,
-      pendingJobs,
-      interviews,
+      defaultStats,
+      monthlyApplications,
     });
   } catch (err) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: err.message });
