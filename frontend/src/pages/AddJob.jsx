@@ -5,6 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import { FiBriefcase, FiMapPin, FiClock, FiCheckCircle } from "react-icons/fi";
 import { FaRegBuilding } from "react-icons/fa";
+import Loader from "../components/Loader";
 
 const AddJob = () => {
   const navigate = useNavigate();
@@ -40,6 +41,10 @@ const AddJob = () => {
     console.log(user);
     addJobMutation.mutate(formData);
   };
+
+  if (addJobMutation.isPending) {
+    return <Loader />;
+  }
 
   return (
     <Wrapper>
