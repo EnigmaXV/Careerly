@@ -9,6 +9,7 @@ import AddJob from "./pages/AddJob";
 import AllJobs from "./pages/AllJobs";
 import AdminDashboard from "./pages/AdminDashboard";
 import Profile from "./pages/Profile";
+import DoughnutChart from "./components/DoughnutChart";
 
 function App() {
   const getCurrentTheme = () => {
@@ -36,6 +37,7 @@ function App() {
           <Route path="all-jobs" element={<AllJobs />} />
           <Route path="admin" element={<AdminDashboard />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="stats" element={<DoughnutChart />} />
         </Route>
       </Route>
       <Route path="*" element={<Error />} />
