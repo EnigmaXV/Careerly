@@ -15,6 +15,7 @@ import Modal from "../components/Modal";
 import EditJobModal from "../components/EditJobModal";
 import dayjs from "dayjs";
 import { CiCalendarDate } from "react-icons/ci";
+import Loader from "../components/Loader";
 
 const AllJobs = () => {
   const queryClient = useQueryClient();
@@ -65,9 +66,9 @@ const AllJobs = () => {
 
   if (isLoading) {
     return (
-      <Wrapper>
-        <div className="loading">Loading...</div>
-      </Wrapper>
+      <LoaderWrapper>
+        <Loader />
+      </LoaderWrapper>
     );
   }
 
@@ -84,7 +85,10 @@ const AllJobs = () => {
       <Wrapper>
         <div className="no-jobs-message">
           <h2>No Jobs Found</h2>
-          <p>It looks like you haven't added any jobs yet. Add a job to get started!</p>
+          <p>
+            It looks like you haven't added any jobs yet. Add a job to get
+            started!
+          </p>
         </div>
       </Wrapper>
     );
@@ -440,6 +444,13 @@ const Wrapper = styled.section`
       }
     }
   }
+`;
+
+const LoaderWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
 `;
 
 export default AllJobs;

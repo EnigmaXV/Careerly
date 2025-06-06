@@ -108,6 +108,7 @@ html {
   --text-color: #f1f3f5;
   --background-secondary-color: #1a1a1a;
   --text-secondary-color: #a4a6a8;
+  --card-bg: #1a1a1a;
 }
 
 body {
