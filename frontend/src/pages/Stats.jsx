@@ -48,7 +48,7 @@ const Wrapper = styled.div`
   .chart-container {
     background-color: var(--card-bg);
     padding: 2rem;
-    border-radius: var(--border-radius);
+    border-radius: 20px;
     box-shadow: var(--shadow-2);
     display: flex;
     flex-direction: column;
