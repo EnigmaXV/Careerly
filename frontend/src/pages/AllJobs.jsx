@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import styled from "styled-components";
 import {
@@ -22,11 +22,25 @@ const AllJobs = () => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("all");
+  const [jobType, setJobType] = useState("all");
+  const [sort, setSort] = useState("latest");
+  const [page, setPage] = useState(1);
 
+  const filters = {
+    search,
+    status,
+    jobType,
+    sort,
+    page,
+  };
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["jobs"],
+    queryKey: ["jobs", filters],
     queryFn: async () => {
-      const response = await axiosInstance.get("/jobs");
+      const response = await axiosInstance.get(
+        `/jobs?search=${filters.search}&status=${filters.status}&jobType=${filters.jobType}&sort=${filters.sort}&page=${filters.page}`
+      );
       return response.data;
     },
   });
@@ -64,13 +78,28 @@ const AllJobs = () => {
     }
   };
 
-  if (isLoading) {
-    return (
-      <LoaderWrapper>
-        <Loader />
-      </LoaderWrapper>
-    );
-  }
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const handleStatusChange = (e) => {
+    setStatus(e.target.value);
+  };
+
+  const handleJobTypeChange = (e) => {
+    setJobType(e.target.value);
+  };
+
+  const handleSortChange = (e) => {
+    setSort(e.target.value);
+  };
+
+  const clearFilters = () => {
+    setSearch("");
+    setStatus("all");
+    setJobType("all");
+    setSort("latest");
+  };
 
   if (isError) {
     return (
@@ -89,6 +118,18 @@ const AllJobs = () => {
             It looks like you haven't added any jobs yet. Add a job to get
             started!
           </p>
+          <br />
+          <button
+            className="search-again-btn"
+            onClick={() => {
+              setSearch("");
+              setStatus("all");
+              setJobType("all");
+              setSort("latest");
+            }}
+          >
+            Search again
+          </button>
         </div>
       </Wrapper>
     );
@@ -101,6 +142,72 @@ const AllJobs = () => {
           <h1>All Jobs</h1>
           <p>Manage your job applications</p>
         </div>
+
+        <form className="form-filter" onSubmit={(e) => e.preventDefault()}>
+          <div className="form-input-container">
+            <label htmlFor="search">Search</label>
+            <input
+              type="text"
+              id="search"
+              name="search"
+              value={search}
+              onChange={handleSearchChange}
+              placeholder="Search jobs..."
+            />
+          </div>
+          <div className="form-row-select-container">
+            <label htmlFor="status">Status</label>
+            <select
+              id="status"
+              name="status"
+              value={status}
+              onChange={handleStatusChange}
+            >
+              {["all", "pending", "interview", "declined"].map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="form-row-select-container">
+            <label htmlFor="jobType">Job Type</label>
+            <select
+              id="jobType"
+              name="jobType"
+              value={jobType}
+              onChange={handleJobTypeChange}
+            >
+              {["all", "full-time", "part-time", "internship"].map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="form-row-select-container">
+            <label htmlFor="sort">Sort By</label>
+            <select
+              id="sort"
+              name="sort"
+              value={sort}
+              onChange={handleSortChange}
+            >
+              {["latest", "oldest", "a-z", "z-a"].map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button
+            type="button"
+            className="clear-filters-btn"
+            onClick={clearFilters}
+          >
+            Clear Filters
+          </button>
+        </form>
 
         <div className="jobs-grid">
           {data?.jobs?.map((job) => (
@@ -197,6 +304,39 @@ const AllJobs = () => {
         }}
         job={selectedJob}
       />
+
+      {data?.totalPages > 1 && (
+        <div className="pagination">
+          <button
+            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+            disabled={page === 1}
+          >
+            Prev
+          </button>
+          {[...Array(data.totalPages)].map((_, i) => {
+            const pageIndex = i + 1;
+            return (
+              <button
+                key={pageIndex}
+                className={pageIndex === page ? "active" : ""}
+                onClick={() => setPage(pageIndex)}
+              >
+                {pageIndex}
+              </button>
+            );
+          })}
+          <button
+            onClick={() =>
+              setPage((prev) => Math.min(prev + 1, data.totalPages))
+            }
+            disabled={page === data.totalPages}
+          >
+            Next
+          </button>
+          <button onClick={() => setPage(1)}>First page</button>
+          <button onClick={() => setPage(data.totalPages)}>Last page</button>
+        </div>
+      )}
     </Wrapper>
   );
 };
@@ -226,6 +366,93 @@ const Wrapper = styled.section`
     p {
       color: var(--text-secondary-color);
       font-size: 1.1rem;
+    }
+  }
+
+  .form-filter {
+    background: var(--navbar-bg-color);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+
+    @media (min-width: 768px) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (min-width: 992px) {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+
+    .form-input-container,
+    .form-row-select-container {
+      display: flex;
+      flex-direction: column;
+      label {
+        font-size: 0.9rem;
+        color: var(--text-secondary-color);
+        margin-bottom: 0.5rem;
+      }
+      input,
+      select {
+        padding: 0.75rem;
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        background: var(--background-color);
+        color: var(--text-color);
+      }
+    }
+
+    .clear-filters-btn {
+      background: var(--red-dark);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      align-self: end;
+      margin-top: 1rem;
+
+      &:hover {
+        background: #a30000;
+      }
+    }
+  }
+
+  .pagination {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+
+    button {
+      background: var(--navbar-bg-color);
+      border: 1px solid var(--border-color);
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-size: 1rem;
+      color: var(--text-color);
+
+      &.active {
+        background: var(--primary-500);
+        color: white;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      &:hover:not(:disabled) {
+        background: var(--primary-button-color);
+      }
     }
   }
 
@@ -385,6 +612,20 @@ const Wrapper = styled.section`
       font-size: 1.1rem;
       color: var(--text-secondary-color);
       line-height: 1.5;
+    }
+    button {
+      background: var(--primary-500);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background: var(--primary-600);
+      }
     }
   }
 
