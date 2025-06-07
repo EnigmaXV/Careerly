@@ -4,14 +4,50 @@ const User = require("../models/UserModel");
 
 const getAllJobs = async (req, res) => {
   try {
-    console.log(req.user.userId);
-    const jobs = await Job.find({ createdBy: req.user.userId }).sort(
-      "-createdAt"
-    );
+    const { search, status, jobType, sort } = req.query;
+    let queryObj = {
+      createdBy: req.user.userId,
+    };
 
-    res
-      .status(StatusCodes.OK)
-      .json({ success: true, count: jobs.length, jobs });
+    if (search) {
+      queryObj.$or = [
+        { position: { $regex: search, $options: "i" } },
+        { company: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    if (status && status !== "all") {
+      queryObj.status = status;
+    }
+    if (jobType && jobType !== "all") {
+      queryObj.jobType = jobType;
+    }
+
+    const sortOptions = {
+      latest: "-createdAt",
+      oldest: "createdAt",
+      "a-Z": "position",
+      "z-A": "-position",
+    };
+
+    const sortKey = sortOptions[sort] || "-createdAt";
+
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const totalJobs = await Job.countDocuments(queryObj);
+    const totalPages = Math.ceil(totalJobs / limit);
+
+    const jobs = await Job.find(queryObj).sort(sortKey).skip(skip).limit(limit);
+
+    res.status(StatusCodes.OK).json({
+      success: true,
+      totalPages,
+      totalJobs,
+      currentPage: page,
+      jobs,
+    });
   } catch (err) {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
