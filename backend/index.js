@@ -16,7 +16,6 @@ const userRouter = require("./routes/userRoutes");
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, "./public")));
 app.use(morgan("dev"));
-app.use(express.static("public"));
 app.use(cookieParser());
 
 //Cloudinary configuration
