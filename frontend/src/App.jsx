@@ -34,6 +34,7 @@ function App() {
           path="dashboard"
           element={<DashboardLayout currentTheme={currentTheme} />}
         >
+          <Route index element={<AllJobs />} />
           <Route path="add-job" element={<AddJob />} />
           <Route path="all-jobs" element={<AllJobs />} />
           <Route path="admin" element={<AdminDashboard />} />
