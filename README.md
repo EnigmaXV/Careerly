@@ -1,6 +1,6 @@
 # Careerly
 
-Careerly is a full-stack job application and career management platform designed to streamline the job search process for candidates and simplify talent management for recruiters. It provides features for job posting, applications, resume management, and analytics all in a modern, secure, and scalable web environment.
+Full-stack job application manager with progress tracking, dashboard, and image uploads.
 
 ### Frontend
 
@@ -33,7 +33,7 @@ frontend/
 - Job board: browse, search, and apply for jobs
 - Pagination for improved navigation through job listings
 - Dashboard with analytics (charts, stats)
-- Profile Editing
+- Profile Management
 - Responsive, dark-theme support
 - Toast notifications and UX enhancements
 
