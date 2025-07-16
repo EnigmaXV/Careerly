@@ -131,4 +131,4 @@ This will start the Vite development server (usually at http://localhost:5173).
 
 ## Screenshot
 
-![App Screenshot](../frontend/public/Screenshot.png)
+![App Screenshot](frontend/public/Screenshot.png)
