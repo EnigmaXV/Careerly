@@ -1,3 +1,5 @@
+/* global process*/
+
 const jwt = require("jsonwebtoken");
 
 const generateCookie = (user, res) => {

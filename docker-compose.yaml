@@ -31,6 +31,6 @@ services:
       - .env
     restart: unless-stopped
 
-  volumes:
-    - backend-node-modules:
-    - frontend-node-modules:
+volumes:
+  backend-node-modules:
+  frontend-node-modules:

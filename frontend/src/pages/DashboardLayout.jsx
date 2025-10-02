@@ -2,11 +2,10 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import { Outlet } from "react-router";
 import Sidebar from "../components/Sidebar";
-import { useState, createContext, useContext } from "react";
+import { useState } from "react";
 import BigSidebar from "../components/BigSidebar";
 import styled from "styled-components";
-
-const DashboardContext = createContext();
+import DashboardContext from "../contexts/DashboardContext";
 const DashboardLayout = ({ currentTheme }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const user = {
@@ -51,9 +50,5 @@ const Wrapper = styled.div`
     background-color: var(--background-color);
   }
 `;
-
-export const useDashboardContext = () => {
-  return useContext(DashboardContext);
-};
 
 export default DashboardLayout;

@@ -4,7 +4,7 @@ import Switch from "./Switch";
 import styled from "styled-components";
 import img from "../assets/images/user-pic.jpg";
 import Burger from "./Burger";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 const Navbar = () => {
   const { data: user } = useQuery({

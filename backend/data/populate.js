@@ -1,3 +1,6 @@
+/* eslint-env node */
+/* global process */
+
 const mockData = require("./mockData");
 const Job = require("../models/JobModel");
 require("dotenv").config();

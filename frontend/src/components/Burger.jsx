@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useDashboardContext } from "../pages/DashboardLayout";
+import { useDashboardContext } from "../hooks/useDashboardContext";
 
 const Burger = () => {
   const { isSidebarOpen, setIsSidebarOpen } = useDashboardContext();

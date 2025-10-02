@@ -1,13 +1,12 @@
 import React from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "../utils/axios";
 import DoughnutChart from "../components/DoughnutChart";
 import LineChart from "../components/LineChart";
 import styled from "styled-components";
 
 const Stats = () => {
-  const queryClient = useQueryClient();
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["chartData"],
     queryFn: async () => {
       const response = await axiosInstance.get("/users/stats");
@@ -16,7 +15,7 @@ const Stats = () => {
   });
 
   const { defaultStats, monthlyApplications } = data || {};
-  console.log(data);
+
   return (
     <Wrapper>
       <div className="chart-container">

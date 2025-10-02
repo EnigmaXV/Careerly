@@ -1,3 +1,5 @@
+/* eslint-env node */
+/* global process, __dirname,  */
 const express = require("express");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
@@ -29,8 +31,8 @@ app.use("/api/v1/jobs", jobsRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 
-app.use((err, req, res, next) => {
-  console.log(chalk.red(err));
+app.use((err, req, res) => {
+  console.log(err);
   res
     .status(StatusCodes.INTERNAL_SERVER_ERROR)
     .json({ msg: `Error: ${err.message}` });
