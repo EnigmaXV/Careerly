@@ -23,12 +23,12 @@ jobs:
       - name: check lint in backend
         working-directory: backend
         run: |
-          npm ci
+          npm install
           npm run lint --max-warnings=0
 
       - name: check lint and build in frontend
         working-directory: frontend
         run: |
-          npm ci
+          npm install
           npm run lint --max-warnings=0
           npm run build
