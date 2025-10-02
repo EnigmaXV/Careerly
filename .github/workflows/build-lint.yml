@@ -25,6 +25,7 @@ jobs:
         run: |
           npm install
           npm run lint --max-warnings=0
+          echo ::notice::Backend linting passed
 
       - name: check lint and build in frontend
         working-directory: frontend
@@ -32,3 +33,4 @@ jobs:
           npm install
           npm run lint --max-warnings=0
           npm run build
+          echo ::notice::Frontend linting and build passed
