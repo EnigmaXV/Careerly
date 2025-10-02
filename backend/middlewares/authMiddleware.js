@@ -1,3 +1,5 @@
+/* global process */
+
 const { StatusCodes } = require("http-status-codes");
 const jwt = require("jsonwebtoken");
 const User = require("../models/UserModel");
@@ -15,7 +17,7 @@ const protect = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
 
-    isTestUser = req.user.userId === "684214b2e2b9a4904b708c9b";
+    const isTestUser = req.user.userId === "684214b2e2b9a4904b708c9b";
     const activeUser = await User.findById(req.user.userId).select("-password");
     if (!activeUser) {
       return res

@@ -3,10 +3,10 @@ import styled from "styled-components";
 import { Link } from "react-router";
 import { FiPlusCircle, FiList, FiBarChart2, FiUser } from "react-icons/fi";
 import { LuLogOut } from "react-icons/lu";
-import { useDashboardContext } from "../pages/DashboardLayout";
+import { useDashboardContext } from "../hooks/useDashboardContext";
 
 const BigSidebar = () => {
-  const { user, setIsSidebarOpen } = useDashboardContext();
+  const { setIsSidebarOpen } = useDashboardContext();
   return (
     <Wrapper onClick={() => setIsSidebarOpen(false)}>
       <div

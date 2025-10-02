@@ -1,5 +1,4 @@
 const { StatusCodes } = require("http-status-codes");
-const Job = require("../models/JobModel");
 const User = require("../models/UserModel");
 const generateCookie = require("../utils/generateCookie");
 
